@@ -11,6 +11,6 @@ app.use(routes);
 
 db.once('open', () => {
   app.listen(PORT, () => {
-    console.log(`http://localhost/${PORT}!`);
+    console.log(`http://localhost/${PORT}`);
   });
 });
