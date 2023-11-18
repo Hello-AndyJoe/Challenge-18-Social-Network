@@ -17,4 +17,34 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  async seeOneUser(req, res) {
+    try {
+      const oneUser = await User.findOne({_id: req.params.userId}).select('-__v').populate('thoughts');
+      
+      if (!oneUser) {
+        return res.status(404).json({message: 'User not found.'})
+      }
+
+      res.json(oneUser);
+    } catch(err) {
+      res.status(500).json(err);
+    }
+  },
+  async updateOneUser (req, res) {
+    try {
+      const oneUser = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $set: req.body },
+        { runValidators: true, new: true }
+      );
+
+      if(!oneUser) {
+        return res.status(404).json({message: 'User not found'})
+      }
+
+      res.json(oneUser);
+    } catch(err) {
+      res.status(500).json(err);
+    }
+  }
 };
