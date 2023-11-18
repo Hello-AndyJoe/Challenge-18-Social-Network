@@ -19,9 +19,9 @@ module.exports = {
   },
   async seeOneUser(req, res) {
     try {
-      const oneUser = await User.findOne({_id: req.params.userId}).select('-__v').populate('thoughts');
+      const oneUser = await User.findOne({_id: req.params.userId}).select('-__v');
       
-      if (!oneUser) {
+      if(!oneUser) {
         return res.status(404).json({message: 'User not found.'})
       }
 
@@ -30,7 +30,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  async updateOneUser (req, res) {
+  async updateOneUser(req, res) {
     try {
       const oneUser = await User.findOneAndUpdate(
         { _id: req.params.userId },
@@ -40,6 +40,19 @@ module.exports = {
 
       if(!oneUser) {
         return res.status(404).json({message: 'User not found'})
+      }
+
+      res.json(oneUser);
+    } catch(err) {
+      res.status(500).json(err);
+    }
+  },
+  async deleteOneUser(req, res) {
+    try {
+      const oneUser = await User.findOneAndDelete({_id: req.params.userId});
+      
+      if(!oneUser) {
+        return res.status(404).json({message: 'User not found.'})
       }
 
       res.json(oneUser);
